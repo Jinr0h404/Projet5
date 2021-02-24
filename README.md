@@ -45,7 +45,8 @@ file with command: pip install -r requirements.txt
 made with:
 Python 3.9.0
 Sublime Text
-
+requests==2.25.1
+API Open Food Facts
 
 ### LICENCE
 
