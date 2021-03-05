@@ -2,10 +2,10 @@
 # coding: utf-8
 
 
-import database.dataScript
+import api.getData
 
 def main():
-	data = database.dataScript.Database()
+	data = api.getData.Database()
 	print(data.product_list)
 	print(len(data.product_list))
 	data.list_database()
