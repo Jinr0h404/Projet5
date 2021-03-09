@@ -5,13 +5,17 @@
 import api.getData
 
 def main():
-	data = api.getData.Database()
-	print(data.product_list)
-	print(len(data.product_list))
-	data.list_database()
-	print(data.product_list)
-	print(len(data.product_list))
+    data = api.getData.Database()
+    print(data.product_list)
+    print(len(data.product_list))
+    data.list_database()
+    print(data.product_list)
+    print(len(data.product_list))
+    test = data.product_list
+    data.cleaner_list(test)
+    print(data.clean_list)
+    print(len(data.clean_list))
 
 if __name__ == "__main__":
-	"""execute main function of thie file if he is run like main program"""
-	main()
+    """execute main function of thie file if he is run like main program"""
+    main()
