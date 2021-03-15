@@ -2,8 +2,7 @@
 # coding: utf-8
 
 from peewee import *
-import mysql.connector, pymysql
-
+import mysql.connector
 
 
 #############
@@ -22,10 +21,10 @@ class BaseModel(Model):
 class Produit(BaseModel):
     unique_id = AutoField()
     nom_produit = CharField(200)
-    marque = TextField()
-    description = TextField()
+    marque = TextField(null = True)
+    description = TextField(null = True)
     nutriscore = CharField(1)
-    url = TextField()
+    url = TextField(null = True)
 
 class Categorie(BaseModel):
     unique_id = AutoField()
@@ -92,4 +91,5 @@ def my_db_getter(list_dict):
     for i in list_dict:
         new_product = Produit.create(nom_produit = i['name'],marque = i['brand'], description = i['description'], nutriscore = i['nutriscore'], url = i['url'])
         new_category = Categorie.create(nom_categorie = i['category'])
-        new_store = Magasin.create(nom_magasin = i['store'])
+        #mettre une boucle pour chaque magasin
+        new_store, created = Magasin.get_or_create(nom_magasin = i['store'][0])
