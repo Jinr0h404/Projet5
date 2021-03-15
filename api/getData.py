@@ -34,7 +34,8 @@ class Database:
                         'store': product.get('stores').lower().split(','),
                         'category': product.get('categories').lower().split(','),
                         'nutriscore' : product.get('nutrition_grade_fr').upper(),
-                        'description' : product.get('generic_name_fr')
+                        'description' : product.get('generic_name_fr'),
+                        'url': product.get('url')
                         }
                         )
 
