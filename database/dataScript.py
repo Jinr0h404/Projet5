@@ -90,6 +90,8 @@ def my_db_getter(list_dict):
 
     for i in list_dict:
         new_product = Produit.create(nom_produit = i['name'],marque = i['brand'], description = i['description'], nutriscore = i['nutriscore'], url = i['url'])
-        new_category = Categorie.create(nom_categorie = i['category'])
+        for element in i['category']:
+            new_category, created = Categorie.get_or_create(nom_categorie = element)
         #mettre une boucle pour chaque magasin
-        new_store, created = Magasin.get_or_create(nom_magasin = i['store'][0])
+        for element in i['store']:
+            new_store, created = Magasin.get_or_create(nom_magasin = element)
