@@ -92,6 +92,12 @@ def my_db_getter(list_dict):
         new_product = Produit.create(nom_produit = i['name'],marque = i['brand'], description = i['description'], nutriscore = i['nutriscore'], url = i['url'])
         for element in i['category']:
             new_category, created = Categorie.get_or_create(nom_categorie = element)
+            id_product = Produit.select(Produit.unique_id).where(Produit.nom_produit==i['name'])
+            id_category = Categorie.select(Categorie.unique_id).where(Categorie.nom_categorie==element)
+            res = Produit_categorie.insert(produit_unique_id = id_product, categorie_unique_id = id_category).execute()
         #mettre une boucle pour chaque magasin
         for element in i['store']:
             new_store, created = Magasin.get_or_create(nom_magasin = element)
+            id_product = Produit.select(Produit.unique_id).where(Produit.nom_produit==i['name'])
+            id_magasin = Magasin.select(Magasin.unique_id).where(Magasin.nom_magasin==element)
+            res = Produit_magasin.insert(produit_unique_id = id_product, magasin_unique_id = id_magasin).execute()
