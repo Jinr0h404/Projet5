@@ -16,7 +16,7 @@ def main():
     print(data.clean_list)
     print(len(data.clean_list))
     database.dataScript.my_db_create()
-    database.dataScript.my_db_getter(data.clean_list)
+    database.dataScript.my_db_setter(data.clean_list)
 
 if __name__ == "__main__":
     """execute main function of thie file if he is run like main program"""

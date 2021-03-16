@@ -79,9 +79,9 @@ def my_db_create():
 
 
 
-def my_db_getter(list_dict):
+def my_db_setter(list_dict):
 
-    #############
+    ############
     ## peewee ###
     #############
 
@@ -101,3 +101,10 @@ def my_db_getter(list_dict):
             id_product = Produit.select(Produit.unique_id).where(Produit.nom_produit==i['name'])
             id_magasin = Magasin.select(Magasin.unique_id).where(Magasin.nom_magasin==element)
             res = Produit_magasin.insert(produit_unique_id = id_product, magasin_unique_id = id_magasin).execute()
+
+def my_db_category_getter(id_choice):
+    pass
+
+
+def my_db_product_getter(id_choice):
+    pass
