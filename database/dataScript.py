@@ -51,7 +51,8 @@ class Produit_magasin(BaseModel):
 
 
 
-
+def my_db_connect():
+    mysql_db.connect()
 
 def my_db_create():
     ######################
@@ -102,9 +103,20 @@ def my_db_setter(list_dict):
             id_magasin = Magasin.select(Magasin.unique_id).where(Magasin.nom_magasin==element)
             res = Produit_magasin.insert(produit_unique_id = id_product, magasin_unique_id = id_magasin).execute()
 
-def my_db_category_getter(id_choice):
-    pass
+def my_db_category_getter():
+    query = Categorie.select().order_by(fn.Rand()).limit(15)
+    #number_product = Produit.select(fn.count(SQL(('*')))).join(Produit_categorie).where(Produit_categorie.categorie_unique_id == cat.unique_id)
+    list_id_cat = []
+    for cat in query:
+        number_product = Produit.select().join(Produit_categorie).where(Produit_categorie.categorie_unique_id == cat.unique_id)
+        print(cat.unique_id, 'la categorie : ', cat.nom_categorie, 'contient', len(number_product), 'produit' )
+        list_id_cat.append(cat.unique_id)
+    return(list_id_cat)
+
 
 
 def my_db_product_getter(id_choice):
-    pass
+    #query = Produit.select().where(Produit.nutriscore == 'A')
+    query = Produit.select().join(Produit_categorie).where(Produit_categorie.categorie_unique_id == id_choice)
+    for product in query:
+        print(product.unique_id, 'produit : ', product.nom_produit, 'nutriscore : ', product.nutriscore)

@@ -8,9 +8,9 @@ import requests, json
 class Database:
     def __init__(self):
         self.product_list = []
-        self.pages = 10
+        self.pages = 5
         self.json = 1
-        self.page_size = 100
+        self.page_size = 50
         self.request_url = "https://fr.openfoodfacts.org/cgi/search.pl"
         self.clean_list = []
 
