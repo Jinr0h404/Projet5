@@ -9,7 +9,7 @@ class Menu:
         self.home = 0
         self.category = 0
         self.product = 0
-        self.favorites = []
+        self.favorites = 0
 
     def home_display(self):
         print('Hey on cherche un produit sain')
@@ -47,6 +47,17 @@ class Menu:
                     #choice = input("entrez le numéro de la catégorie qui vous intéresse\n")
         self.product = choice_input
         return(self.product)
+
+    def substitute_display(self, product_name, new_product):
+        print("En remplacement de ", product_name, "vous pouvez utiliser: ")
+        print(new_product)
+        choice = input("souhaitez-vous enregistrer ce produit comme substitut dans vos favoris? \n1 - OUI\n2 - NON\n")
+        if choice == "1":
+            print("vous pouvez maintenant retrouver ce produit dans votre liste de favoris")
+        else:
+            print("la prochaine fois")
+        self.favorites = int(choice)
+
 
 
 def main():

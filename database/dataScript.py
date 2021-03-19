@@ -123,3 +123,19 @@ def my_db_product_getter(id_choice):
         print(product.unique_id, 'produit : ', product.nom_produit, 'nutriscore : ', product.nutriscore)
         list_id_prod.append(product.unique_id)
     return(list_id_prod)
+
+def my_db_product_name_getter(id_prod):
+    query = Produit.select().where(Produit.unique_id == id_prod)
+    product_name = []
+    for product in query:
+        product_name.append(product.nom_produit)
+    return(product_name[0])
+
+
+
+def my_db_substitute_getter(id_choice):
+    pass
+
+
+def my_db_substitute_setter(id_choice):
+    pass
