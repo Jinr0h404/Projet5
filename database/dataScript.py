@@ -118,5 +118,8 @@ def my_db_category_getter():
 def my_db_product_getter(id_choice):
     #query = Produit.select().where(Produit.nutriscore == 'A')
     query = Produit.select().join(Produit_categorie).where(Produit_categorie.categorie_unique_id == id_choice)
+    list_id_prod = []
     for product in query:
         print(product.unique_id, 'produit : ', product.nom_produit, 'nutriscore : ', product.nutriscore)
+        list_id_prod.append(product.unique_id)
+    return(list_id_prod)

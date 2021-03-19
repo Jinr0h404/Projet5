@@ -21,7 +21,8 @@ def main():
     choice_result = menu.home_display()
     if choice_result == 1:
         display_cat_choice = database.dataScript.my_db_category_getter()
-        menu.choice_display(display_cat_choice)
+        display_prod_choice = database.dataScript.my_db_product_getter(menu.choice_display(display_cat_choice))
+        menu.product_display(display_prod_choice)
     else:
         database.dataScript.my_db_product_getter(1)
     print(menu.category)

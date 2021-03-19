@@ -8,7 +8,7 @@ class Menu:
     def __init__(self):
         self.home = 0
         self.category = 0
-        self.product = []
+        self.product = 0
         self.favorites = []
 
     def home_display(self):
@@ -32,6 +32,22 @@ class Menu:
                     #choice = input("entrez le numéro de la catégorie qui vous intéresse\n")
         self.category = choice_input
         return(self.category)
+
+
+    def product_display(self, list_prod_id):
+        print("Pour quel produit souhaitez vous un substitut?")
+        choice = "0"
+        choice_input = 0
+        while not(choice_input in list_prod_id):
+            choice = input("entrez le numéro du produit qui vous intéresse\n")
+            if choice.isdigit() == True:
+                choice_input = int(choice)
+            else:
+                print("il faut entrer un nombre")
+                    #choice = input("entrez le numéro de la catégorie qui vous intéresse\n")
+        self.product = choice_input
+        return(self.product)
+
 
 def main():
     menu = Menu()
