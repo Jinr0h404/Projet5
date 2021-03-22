@@ -23,7 +23,8 @@ def main():
         display_cat_choice = database.dataScript.my_db_category_getter()
         display_prod_choice = database.dataScript.my_db_product_getter(menu.choice_display(display_cat_choice))
         prod_to_substitute = menu.product_display(display_prod_choice)
-        menu.substitute_display(database.dataScript.my_db_product_name_getter(prod_to_substitute), 'test')
+        substitute = database.dataScript.my_db_substitute_getter(prod_to_substitute)
+        menu.substitute_display(database.dataScript.my_db_product_name_getter(prod_to_substitute), substitute)
     else:
         database.dataScript.my_db_product_getter(1)
 

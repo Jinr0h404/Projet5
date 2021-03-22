@@ -91,16 +91,18 @@ def my_db_setter(list_dict):
 
     for i in list_dict:
         new_product = Produit.create(nom_produit = i['name'],marque = i['brand'], description = i['description'], nutriscore = i['nutriscore'], url = i['url'])
-        for element in i['category']:
-            new_category, created = Categorie.get_or_create(nom_categorie = element)
+        for category in i['category']:
+            category = category.strip()
+            new_category, created = Categorie.get_or_create(nom_categorie = category)
             id_product = Produit.select(Produit.unique_id).where(Produit.nom_produit==i['name'])
-            id_category = Categorie.select(Categorie.unique_id).where(Categorie.nom_categorie==element)
+            id_category = Categorie.select(Categorie.unique_id).where(Categorie.nom_categorie==category)
             res = Produit_categorie.insert(produit_unique_id = id_product, categorie_unique_id = id_category).execute()
         #mettre une boucle pour chaque magasin
-        for element in i['store']:
-            new_store, created = Magasin.get_or_create(nom_magasin = element)
+        for store in i['store']:
+            store= store.strip()
+            new_store, created = Magasin.get_or_create(nom_magasin = store)
             id_product = Produit.select(Produit.unique_id).where(Produit.nom_produit==i['name'])
-            id_magasin = Magasin.select(Magasin.unique_id).where(Magasin.nom_magasin==element)
+            id_magasin = Magasin.select(Magasin.unique_id).where(Magasin.nom_magasin==store)
             res = Produit_magasin.insert(produit_unique_id = id_product, magasin_unique_id = id_magasin).execute()
 
 def my_db_category_getter():
@@ -134,7 +136,17 @@ def my_db_product_name_getter(id_prod):
 
 
 def my_db_substitute_getter(id_choice):
-    pass
+    
+    list_substitute = {}
+    query_cat = Categorie.select().join(Produit_categorie).where(Produit_categorie.produit_unique_id == id_choice)
+    for category in query_cat:
+        query_substitute = Produit.select().join(Produit_categorie).where(Produit_categorie.categorie_unique_id == category.unique_id)
+        for product in query_substitute:
+            if product.unique_id in list_substitute.keys():
+                list_substitute[product.unique_id] += 1
+            else:
+                list_substitute[product.unique_id] = 1
+    return(list_substitute)
 
 
 def my_db_substitute_setter(id_choice):
