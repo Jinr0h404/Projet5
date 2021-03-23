@@ -138,6 +138,7 @@ def my_db_product_name_getter(id_prod):
 def my_db_substitute_getter(id_choice):
     
     list_substitute = {}
+    #best_substitute = 0
     query_cat = Categorie.select().join(Produit_categorie).where(Produit_categorie.produit_unique_id == id_choice)
     for category in query_cat:
         query_substitute = Produit.select().join(Produit_categorie).where(Produit_categorie.categorie_unique_id == category.unique_id)
@@ -146,7 +147,31 @@ def my_db_substitute_getter(id_choice):
                 list_substitute[product.unique_id] += 1
             else:
                 list_substitute[product.unique_id] = 1
-    return(list_substitute)
+    sorted_dict = sorted(list_substitute.items(), key=lambda t: t[1], reverse=True)
+    i = 1
+    query = Produit.select().where(Produit.unique_id == id_choice)
+    query_nutriscore = ''
+    query_best_id = 0
+    query_best_nutriscore =''
+    for product in query:
+        query_nutriscore = product.nutriscore
+    print(query_nutriscore)
+    while not query_best_nutriscore:
+        for item in sorted_dict:
+            query_best = Produit.select().where(Produit.unique_id == sorted_dict[i][0])
+            for product in query_best:
+                query_best_nutr_temp = product.nutriscore
+                query_best_id_temp = product.unique_id
+                if query_best_nutr_temp < query_nutriscore:
+                    best_substitute = query_best
+                    query_best_nutriscore = query_best_nutr_temp
+                    query_best_id = query_best_id_temp
+                else:
+                    i += 1
+    query_best_substitute = Produit.select().where(Produit.unique_id == query_best_id)
+    for product in query_best_substitute:
+        print('votre substitut ', product.unique_id, product.nom_produit, product.url )
+    return(query_best_id)
 
 
 def my_db_substitute_setter(id_choice):
