@@ -48,6 +48,10 @@ class Produit_magasin(BaseModel):
     class Meta:
         primary_key = CompositeKey('produit_unique_id', 'magasin_unique_id')
 
+class Favoris(BaseModel):
+    unique_id = AutoField()
+    fk_unique_id_produit = ForeignKeyField(Produit)
+
 
 
 
@@ -87,7 +91,7 @@ def my_db_setter(list_dict):
     #############
 
     #mysql_db.connect()
-    mysql_db.create_tables([Produit, Categorie, Produit_categorie, Magasin, Produit_magasin])
+    mysql_db.create_tables([Produit, Categorie, Produit_categorie, Magasin, Produit_magasin, Favoris])
 
     for i in list_dict:
         new_product = Produit.create(nom_produit = i['name'],marque = i['brand'], description = i['description'], nutriscore = i['nutriscore'], url = i['url'])
@@ -138,7 +142,6 @@ def my_db_product_name_getter(id_prod):
 def my_db_substitute_getter(id_choice):
     
     list_substitute = {}
-    #best_substitute = 0
     query_cat = Categorie.select().join(Produit_categorie).where(Produit_categorie.produit_unique_id == id_choice)
     for category in query_cat:
         query_substitute = Produit.select().join(Produit_categorie).where(Produit_categorie.categorie_unique_id == category.unique_id)
@@ -152,27 +155,56 @@ def my_db_substitute_getter(id_choice):
     query = Produit.select().where(Produit.unique_id == id_choice)
     query_nutriscore = ''
     query_best_id = 0
+    query_same_id = 0
     query_best_nutriscore =''
+    query_same_nutriscore =''
     for product in query:
         query_nutriscore = product.nutriscore
-    print(query_nutriscore)
-    while not query_best_nutriscore:
-        for item in sorted_dict:
+
+    while not query_best_nutriscore and not query_same_nutriscore:
+        while i < len(sorted_dict) and not query_best_nutriscore:
             query_best = Produit.select().where(Produit.unique_id == sorted_dict[i][0])
             for product in query_best:
                 query_best_nutr_temp = product.nutriscore
                 query_best_id_temp = product.unique_id
-                if query_best_nutr_temp < query_nutriscore:
-                    best_substitute = query_best
-                    query_best_nutriscore = query_best_nutr_temp
-                    query_best_id = query_best_id_temp
+            if query_best_nutr_temp < query_nutriscore:
+                query_best_nutriscore = query_best_nutr_temp
+                query_best_id = query_best_id_temp
+                print(i)
+                print('il y\'a', len(sorted_dict), 'produits testés dans la liste')
+                print('best', query_best_nutriscore, query_best_id)
+            else:
+                i += 1
+                print(i, 'dans la condition else de la première boucle')
+        if not query_best_nutriscore:
+            i = 1
+            while i < len(sorted_dict) and not query_same_nutriscore:             
+                query_best = Produit.select().where(Produit.unique_id == sorted_dict[i][0])
+                for product in query_best:
+                    query_same_nutr_temp = product.nutriscore
+                    query_same_id_temp = product.unique_id
+                if query_same_nutr_temp == query_nutriscore:
+                        query_same_nutriscore = query_same_nutr_temp
+                        query_best_id = query_same_id_temp
                 else:
                     i += 1
+                    print(i)
+                    print('same', query_same_nutriscore)
+
+
     query_best_substitute = Produit.select().where(Produit.unique_id == query_best_id)
+    query_store = Magasin.select().join(Produit_magasin).where(Produit_magasin.produit_unique_id == query_best_id)
+    list_store = []
+    for store in query_store:
+        list_store.append(store.nom_magasin)
+    
     for product in query_best_substitute:
-        print('votre substitut ', product.unique_id, product.nom_produit, product.url )
+        if query_best_nutriscore:
+            print('votre substitut ', product.unique_id, product.nom_produit, product.url, list_store, product.description)
+        else:
+            print('il n\'y a pas de produit plus sain mais voici un équivalent: ', product.unique_id, product.nom_produit, product.url, list_store, product.description)
     return(query_best_id)
 
 
 def my_db_substitute_setter(id_choice):
-    pass
+    new_favorite, created = Favoris.get_or_create(fk_unique_id_produit = id_choice)
