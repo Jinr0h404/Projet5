@@ -4,21 +4,21 @@
 """ the dataScript module contains the different classes for create database
 and functions to manage the database"""
 
-from peewee import *
+import peewee
 import mysql.connector
-
+from tqdm import tqdm
 
 #############
 ## peewee ###
 #############
 
 
-mysql_db = MySQLDatabase(
+mysql_db = peewee.MySQLDatabase(
     "api_open_test", user="food", password="1234", host="localhost"
 )
 
 
-class BaseModel(Model):
+class BaseModel(peewee.Model):
     class Meta:
         database = mysql_db
         # peut être des parentheses à la place des crochet dans la doc pewwe
@@ -26,43 +26,43 @@ class BaseModel(Model):
 
 
 class Produit(BaseModel):
-    unique_id = AutoField()
-    nom_produit = CharField(200)
-    marque = TextField(null=True)
-    description = TextField(null=True)
-    nutriscore = CharField(1)
-    url = TextField(null=True)
+    unique_id = peewee.AutoField()
+    nom_produit = peewee.CharField(200)
+    marque = peewee.TextField(null=True)
+    description = peewee.TextField(null=True)
+    nutriscore = peewee.CharField(1)
+    url = peewee.TextField(null=True)
 
 
 class Categorie(BaseModel):
-    unique_id = AutoField()
-    nom_categorie = CharField(200)
+    unique_id = peewee.AutoField()
+    nom_categorie = peewee.CharField(200)
 
 
 class Produit_categorie(BaseModel):
-    produit_unique_id = ForeignKeyField(Produit)
-    categorie_unique_id = ForeignKeyField(Categorie)
+    produit_unique_id = peewee.ForeignKeyField(Produit)
+    categorie_unique_id = peewee.ForeignKeyField(Categorie)
 
     class Meta:
-        primary_key = CompositeKey("produit_unique_id", "categorie_unique_id")
+        primary_key = peewee.CompositeKey("produit_unique_id", "categorie_unique_id")
 
 
 class Magasin(BaseModel):
-    unique_id = AutoField()
-    nom_magasin = CharField(100)
+    unique_id = peewee.AutoField()
+    nom_magasin = peewee.CharField(100)
 
 
 class Produit_magasin(BaseModel):
-    produit_unique_id = ForeignKeyField(Produit)
-    magasin_unique_id = ForeignKeyField(Magasin)
+    produit_unique_id = peewee.ForeignKeyField(Produit)
+    magasin_unique_id = peewee.ForeignKeyField(Magasin)
 
     class Meta:
-        primary_key = CompositeKey("produit_unique_id", "magasin_unique_id")
+        primary_key = peewee.CompositeKey("produit_unique_id", "magasin_unique_id")
 
 
 class Favoris(BaseModel):
-    unique_id = AutoField()
-    fk_unique_id_produit = ForeignKeyField(Produit)
+    unique_id = peewee.AutoField()
+    fk_unique_id_produit = peewee.ForeignKeyField(Produit)
 
 
 def my_db_connect():
@@ -108,7 +108,7 @@ def my_db_setter(list_dict):
             Favoris]
     )
 
-    for i in list_dict:
+    for i in tqdm(list_dict):
         new_product = Produit.create(
             nom_produit=i["name"],
             marque=i["brand"],
@@ -145,7 +145,7 @@ def my_db_setter(list_dict):
 
 
 def my_db_category_getter():
-    query = Categorie.select().order_by(fn.Rand()).limit(15)
+    query = Categorie.select().order_by(peewee.fn.Rand()).limit(15)
     list_id_cat = []
     for cat in query:
         number_product = (
@@ -267,7 +267,7 @@ def my_db_substitute_getter(id_choice):
         if query_best_nutriscore:
             print(
                 "votre substitut ",
-                product.unique_id,
+                product.nutriscore,
                 product.nom_produit,
                 product.url,
                 list_store,
@@ -277,7 +277,7 @@ def my_db_substitute_getter(id_choice):
             print(
                 """il n'y a pas de produit plus sain mais voici un 
                 équivalent: """,
-                product.unique_id,
+                product.nutriscore,
                 product.nom_produit,
                 product.url,
                 list_store,

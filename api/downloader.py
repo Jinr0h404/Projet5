@@ -6,6 +6,7 @@ information from the api openfoodfact"""
 
 import requests
 import json
+from tqdm import tqdm
 
 """retrieve a list of products in JSON format through Open Food Fact API"""
 
@@ -20,7 +21,7 @@ class Database:
         self.clean_list = []
 
     def list_database(self):
-        for i in range(1, self.pages):
+        for i in tqdm(range(1, self.pages)):
             params = {
                 "action": "process",
                 "page_size": self.page_size,

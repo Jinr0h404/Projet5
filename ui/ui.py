@@ -17,8 +17,8 @@ class Menu:
         print('Hey on cherche un produit sain')
         choice = ""
         while not(choice == "1" or choice == "2"):
-            choice = input("""1 - Quel aliment souhaitez-vous remplacer ?
-                2 - Retrouver mes aliments substitués.\n""")
+            choice = input("1 - Quel aliment souhaitez-vous remplacer ?\n"
+                "2 - Retrouver mes aliments substitués.\n")
         self.home = int(choice)
         return(self.home)
 
@@ -53,9 +53,9 @@ class Menu:
         print("En remplacement de ", product_name, "vous pouvez utiliser: ")
         print(new_product)
         choice = input(
-            """souhaitez-vous enregistrer ce substitut dans vos favoris?
-            1 - OUI
-            2 - NON\n""")
+            "souhaitez-vous enregistrer ce substitut dans vos favoris?"
+            "1 - OUI\n"
+            "2 - NON\n")
         if choice == "1":
             print(
                 "vous pouvez maintenant retrouver ce produit dans vos favoris"
