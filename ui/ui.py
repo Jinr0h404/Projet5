@@ -53,7 +53,7 @@ class Menu:
         print("En remplacement de ", product_name, "vous pouvez utiliser: ")
         print(new_product)
         choice = input(
-            "souhaitez-vous enregistrer ce substitut dans vos favoris?"
+            "souhaitez-vous enregistrer ce substitut dans vos favoris?\n"
             "1 - OUI\n"
             "2 - NON\n")
         if choice == "1":
