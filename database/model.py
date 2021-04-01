@@ -76,8 +76,8 @@ class Database_creation:
         cursor = self.db_connexion.cursor()
 
     # executing cursor with execute method and pass SQL query
-        cursor.execute("CREATE DATABASE api_open_test")
-        cursor.execute("CREATE USER 'food'@'localhost' IDENTIFIED BY '1234'")
+        cursor.execute("CREATE DATABASE IF NOT EXISTS api_open_test")
+        cursor.execute("CREATE USER IF NOT EXISTS 'food'@'localhost' IDENTIFIED BY '1234'")
         cursor.execute("""GRANT ALL PRIVILEGES ON api_open_test.* TO 
             'food'@'localhost'""")
 

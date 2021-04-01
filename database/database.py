@@ -52,10 +52,11 @@ def my_db_product_getter(id_choice):
     list_id_prod = []
     for product in query:
         print(
+            "l'id de produit n°:",
             product.unique_id,
-            "produit : ",
+            "représente : ",
             product.nom_produit,
-            "nutriscore : ",
+            "dont le nutriscore est: ",
             product.nutriscore,
         )
         list_id_prod.append(product.unique_id)
@@ -144,12 +145,16 @@ def my_db_substitute_getter(id_choice):
     for product in query_best_substitute:
         if query_best_nutriscore:
             print(
-                "votre substitut ",
-                product.nutriscore,
+                "votre substitut pourrait être: ",
                 product.nom_produit,
-                product.url,
-                list_store,
+                "son nutriscore est : ",
+                product.nutriscore,
+                "petite description: ",
                 product.description,
+                "vous pouvez le trouver: ",
+                list_store,
+                "lien vers le site open food fact: ",
+                product.url,
             )
         else:
             print(

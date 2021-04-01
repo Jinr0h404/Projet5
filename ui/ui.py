@@ -6,6 +6,8 @@
 user interface"""
 
 
+from database import database
+
 class Menu:
     def __init__(self):
         self.home = 0
@@ -20,15 +22,14 @@ class Menu:
             choice = input("1 - Quel aliment souhaitez-vous remplacer ?\n"
                 "2 - Retrouver mes aliments substitués.\n")
         self.home = int(choice)
-        return(self.home)
+#        return(self.home)
 
     def choice_display(self, list_cat_id):
-        print('les produits de quelle catégorie souhaitez-vous afficher ?')
         choice = "0"
         choice_input = 0
         while not(choice_input in list_cat_id):
             choice = input(
-                "entrez le numéro de la catégorie qui vous intéresse\n")
+                "Choisissez la catégorie dont vous vouler afficher les produits\n")
             if choice.isdigit() is True:
                 choice_input = int(choice)
             else:
@@ -50,10 +51,8 @@ class Menu:
         return(self.product)
 
     def substitute_record(self, product_name, new_product):
-        print("En remplacement de ", product_name, "vous pouvez utiliser: ")
-        print(new_product)
         choice = input(
-            "souhaitez-vous enregistrer ce substitut dans vos favoris?\n"
+            "souhaitez-vous enregistrer ce substitut",product_name, "dans vos favoris?\n"
             "1 - OUI\n"
             "2 - NON\n")
         if choice == "1":
@@ -66,6 +65,31 @@ class Menu:
 
     def substitute_display(self):
         print("voici la liste de vos favoris")
+
+    def run(self, menu):
+        choice_result = menu.home_display()
+        if self.home == 1:
+            display_cat_choice = database.my_db_category_getter()
+            display_prod_choice = database.my_db_product_getter(
+                menu.choice_display(display_cat_choice)
+            )
+            prod_to_substitute = menu.product_display(display_prod_choice)
+            substitute = database.my_db_substitute_getter(
+                prod_to_substitute)
+            substitute_choice = menu.substitute_record(
+                database.my_db_product_name_getter(prod_to_substitute),
+                substitute,
+            )
+            if menu.favorites:
+                database.my_db_substitute_setter(substitute)
+        else:
+            database.substitute_display()
+            database.my_db_product_getter(1)
+
+
+
+
+
 
 
 def main():
