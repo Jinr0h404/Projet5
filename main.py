@@ -20,9 +20,11 @@ def main():
     db = database.model.Database_creation()
     db.my_db_create()
     db.my_db_setter(data.clean_list)
+    #generate instance of Data_manager
+    data_manage = database.database.Data_manager()
     # generate an instance of Menu object from the UI
     menu = ui.ui.Menu()
-    menu.run(menu)
+    menu.run(menu, data_manage)
 
 
 

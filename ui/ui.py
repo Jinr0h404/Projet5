@@ -48,11 +48,11 @@ class Menu:
             else:
                 print("il faut entrer un nombre")
         self.product = choice_input
-        return(self.product)
+#        return(self.product)
 
-    def substitute_record(self, product_name, new_product):
+    def substitute_record(self):
         choice = input(
-            "souhaitez-vous enregistrer ce substitut",product_name, "dans vos favoris?\n"
+            "souhaitez-vous enregistrer ce substitut dans vos favoris?\n"
             "1 - OUI\n"
             "2 - NON\n")
         if choice == "1":
@@ -66,25 +66,29 @@ class Menu:
     def substitute_display(self):
         print("voici la liste de vos favoris")
 
-    def run(self, menu):
-        choice_result = menu.home_display()
-        if self.home == 1:
-            display_cat_choice = database.my_db_category_getter()
-            display_prod_choice = database.my_db_product_getter(
-                menu.choice_display(display_cat_choice)
-            )
-            prod_to_substitute = menu.product_display(display_prod_choice)
-            substitute = database.my_db_substitute_getter(
-                prod_to_substitute)
-            substitute_choice = menu.substitute_record(
-                database.my_db_product_name_getter(prod_to_substitute),
-                substitute,
-            )
-            if menu.favorites:
-                database.my_db_substitute_setter(substitute)
-        else:
-            database.substitute_display()
-            database.my_db_product_getter(1)
+    def run(self, menu, data_manage):
+        quit = 0
+        while not quit:
+            choice_result = menu.home_display()
+            if self.home == 1:
+                display_cat_choice = data_manage.my_db_category_getter()
+                display_prod_choice = data_manage.my_db_product_getter(
+                    menu.choice_display(display_cat_choice)
+                )
+                menu.product_display(display_prod_choice)
+                data_manage.my_db_substitute_getter(self.product)
+                substitute = data_manage.best_id
+                data_manage.my_db_product_name_getter(self.product)
+                menu.substitute_record()
+                if menu.favorites:
+                    data_manage.my_db_substitute_setter(substitute)
+            else:
+                menu.substitute_display
+                data_manage.my_db_favorites()
+            quit = int(input(
+                "souhaitez-vous continuer?\n"
+                "0 - OUI\n"
+                "1 - NON\n"))
 
 
 
