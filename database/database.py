@@ -192,11 +192,11 @@ class Data_manager:
             fk_unique_id_produit=id_choice)
 
     def my_db_favorites(self):
-        query_favorite = database.model.Favoris.select()
+        query_favorite = database.model.Favoris.select().join(database.model.Produit)
 
         for id_prod in query_favorite:
-            query_product = database.model.Produit.select().where(
-            database.model.Produit.unique_id == id_prod)
+            query_product = database.model.Produit.select().join(database.model.Favoris).where(
+            database.model.Produit.unique_id == id_prod.fk_unique_id_produit)
             for product in query_product:
                 print(
                     "votre substitut pourrait être: ",
@@ -205,8 +205,8 @@ class Data_manager:
                     product.nutriscore, '\n',
                     "petite description: ",
                     product.description, '\n',
-                    "vous pouvez le trouver dans les magasins: ",
-                    list_store, '\n',
+#                    "vous pouvez le trouver dans les magasins: ",
+#                    list_store, '\n',
                     "lien vers le site open food fact: ",
                     product.url
                 )

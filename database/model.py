@@ -59,7 +59,6 @@ class Produit_magasin(BaseModel):
 
 
 class Favoris(BaseModel):
-    unique_id = peewee.AutoField()
     fk_unique_id_produit = peewee.ForeignKeyField(Produit)
 
 
