@@ -162,7 +162,7 @@ class Data_manager:
                     "petite description: ",
                     product.description, '\n',
                     "vous pouvez le trouver dans les magasins: ",
-                    list_store, '\n',
+                    ", ".join(list_store), '\n',
                     "lien vers le site open food fact: ",
                     product.url
                 )
@@ -177,7 +177,7 @@ class Data_manager:
                     "petite description: ",
                     product.description, '\n',
                     "vous pouvez le trouver dans les magasins: ",
-                    list_store, '\n',
+                    ", ".join(list_store), '\n',
                     "lien vers le site open food fact: ",
                     product.url
                 )
@@ -193,20 +193,17 @@ class Data_manager:
 
     def my_db_favorites(self):
         query_favorite = database.model.Favoris.select().join(database.model.Produit)
+        print("voici vos favoris: ")
 
         for id_prod in query_favorite:
             query_product = database.model.Produit.select().join(database.model.Favoris).where(
             database.model.Produit.unique_id == id_prod.fk_unique_id_produit)
             for product in query_product:
                 print(
-                    "votre substitut pourrait être: ",
-                    product.nom_produit ,'\n',
-                    "son nutriscore est : ",
-                    product.nutriscore, '\n',
+                    "\nnom du produit: ",
+                    product.nom_produit,
                     "petite description: ",
-                    product.description, '\n',
-#                    "vous pouvez le trouver dans les magasins: ",
-#                    list_store, '\n',
+                    product.description,
                     "lien vers le site open food fact: ",
                     product.url
                 )

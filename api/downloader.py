@@ -8,9 +8,8 @@ import requests
 import json
 from tqdm import tqdm
 
+
 """retrieve a list of products in JSON format through Open Food Fact API"""
-
-
 class Database:
     def __init__(self):
         self.product_list = []

@@ -21,6 +21,8 @@ class Menu:
         while not(choice == "1" or choice == "2"):
             choice = input("1 - Quel aliment souhaitez-vous remplacer ?\n"
                 "2 - Retrouver mes aliments substitués.\n")
+            if not choice.isdigit():
+                print("il faut entrer un chiffre de la liste")
         self.home = int(choice)
 #        return(self.home)
 
@@ -51,17 +53,24 @@ class Menu:
 #        return(self.product)
 
     def substitute_record(self):
-        choice = input(
-            "souhaitez-vous enregistrer ce substitut dans vos favoris?\n"
-            "1 - OUI\n"
-            "2 - NON\n")
-        if choice == "1":
+        choice = "0"
+        choice_input = 0
+        while not(choice_input == 1 or choice_input == 2):
+            choice = input(
+                "souhaitez-vous enregistrer ce substitut dans vos favoris?\n"
+                "1 - OUI\n"
+                "2 - NON\n")
+            if choice.isdigit() is True:
+                choice_input = int(choice)
+            else:
+                print("il faut entrer un nombre")
+        if choice_input == 1:
             print(
                 "vous pouvez maintenant retrouver ce produit dans vos favoris"
                 )
         else:
             print("la prochaine fois")
-        self.favorites = int(choice)
+        self.favorites = choice_input
 
     def substitute_display(self):
         print("voici la liste de vos favoris")
@@ -85,11 +94,16 @@ class Menu:
             else:
                 menu.substitute_display
                 data_manage.my_db_favorites()
-            quit = int(input(
-                "souhaitez-vous continuer?\n"
-                "0 - OUI\n"
-                "1 - NON\n"))
-
+            quit_choice = ""
+            while not(quit_choice == "0" or quit_choice == "1"):
+                quit_choice = input(
+                    "souhaitez-vous continuer?\n"
+                    "0 - OUI\n"
+                    "1 - NON\n")
+                if quit_choice.isdigit() is True:
+                    quit = int(quit_choice)
+                else:
+                    print("il faut entrer un chiffre")
 
 
 
