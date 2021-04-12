@@ -1,8 +1,8 @@
 #! /usr/bin/env python3
 # coding: utf-8
 
-""" the database module contains the different classes for update database
-and functions to manage the database"""
+""" the database module contains the different class and methods for update
+and manage the database"""
 
 import peewee
 import mysql.connector
@@ -15,6 +15,7 @@ mysql_db = peewee.MySQLDatabase(
 )
 
 class Data_manager:
+    """this class allows you to make queries on the database"""
     def __init__(self):
         self.list_id_cat = []
         self.list_id_prod = []
@@ -24,11 +25,14 @@ class Data_manager:
 
 
     def my_db_connect():
+        """ method to initiate the connection to the database"""
         mysql_db.connect()
     
     
     def my_db_category_getter(self):
-        #mysql_db.connect()
+        """method which executes a query returning a random list of 15
+        categories (the list contains the id of the categories) taken from
+        the database"""
         query = database.model.Categorie.select().order_by(peewee.fn.Rand()).limit(15)
         list_id_cat = []
         for cat in query:
@@ -51,8 +55,8 @@ class Data_manager:
 
 
     def my_db_product_getter(self, id_choice):
-        #mysql_db.connect()
-        # query = Produit.select().where(Produit.nutriscore == 'A')
+        """method which executes a query returning the list of products
+        contained in the category whose id is given as a parameter."""
         query = (
             database.model.Produit.select()
             .join(database.model.Produit_categorie)
@@ -73,17 +77,20 @@ class Data_manager:
 
 
     def my_db_product_name_getter(self, id_prod):
-        #mysql_db.connect()
+        """method which executes a query returning the name of products
+        whose id is given as a parameter."""
         query = database.model.Produit.select().where(database.model.Produit.unique_id == id_prod)
         product_name = []
         for product in query:
             product_name.append(product.nom_produit)
         self.prod_name = product_name[0]
-#        return product_name[0]
 
 
     def my_db_substitute_getter(self, id_choice):
-        #mysql_db.connect()
+        """method which executes a query returning a possible substitute for
+        the product whose id is given as a parameter. If there is no product
+        with a better nutriscore then the first product in the list of
+        products belonging to a maximum of common categories is selected."""
         list_substitute = {}
         query_cat = (
             database.model.Categorie.select()
@@ -166,7 +173,6 @@ class Data_manager:
                     "lien vers le site open food fact: ",
                     product.url
                 )
-#                self.substitute_name = product.nom_produit
             else:
                 print(
                     """il n'y a pas de produit plus sain mais voici un 
@@ -181,17 +187,17 @@ class Data_manager:
                     "lien vers le site open food fact: ",
                     product.url
                 )
-#                self.substitute_name = product.nom_produit
         self.best_id = query_best_id
-#        return query_best_id
-
 
     def my_db_substitute_setter(self, id_choice):
-        #mysql_db.connect()
+        """method which executes a query to add the id of the chosen product
+        in the favorites table if it is not already there"""
         new_favorite, created = database.model.Favoris.get_or_create(
             fk_unique_id_produit=id_choice)
 
     def my_db_favorites(self):
+        """method that executes a query to display the list of products in
+        the favorites table."""
         query_favorite = database.model.Favoris.select().join(database.model.Produit)
         print("voici vos favoris: ")
 

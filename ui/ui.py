@@ -9,6 +9,8 @@ user interface"""
 from database import database
 
 class Menu:
+    """the menu class contains the methods allowing display and interaction
+    with the user."""
     def __init__(self):
         self.home = 0
         self.category = 0
@@ -16,6 +18,8 @@ class Menu:
         self.favorites = 0
 
     def home_display(self):
+        """the home_display method offers the user to find a substitute for a
+        product or to consult his favorites."""
         print('Hey on cherche un produit sain')
         choice = ""
         while not(choice == "1" or choice == "2"):

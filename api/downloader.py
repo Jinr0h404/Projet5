@@ -9,8 +9,10 @@ import json
 from tqdm import tqdm
 
 
-"""retrieve a list of products in JSON format through Open Food Fact API"""
+
 class Database:
+    """the database class takes as attribute the request elements on the
+    openfoodfact API"""
     def __init__(self):
         self.product_list = []
         self.pages = 5
@@ -20,7 +22,11 @@ class Database:
         self.clean_list = []
 
     def list_database(self):
-        for i in tqdm(range(1, self.pages)):
+        """retrieve a list of products in JSON format through Open Food Fact
+        API. The loop goes through each element of the number of pages given,
+        checks if the main categories are correctly entered for the product
+        and creates a dictionary list."""
+        for i in tqdm(range(1, self.pages)):# tqdm add progress bar
             params = {
                 "action": "process",
                 "page_size": self.page_size,
@@ -51,9 +57,11 @@ class Database:
                         }
                     )
 
-    def cleaner_list(self, test):
+    def cleaner_list(self, list_to_clean):
+        """this method loops over the first dictionary list to remove
+        duplicates"""
         temp_list = []
-        for i in test:
+        for i in list_to_clean:
             if i["name"] not in temp_list:
                 self.clean_list.append(i)
                 temp_list.append(i["name"])
