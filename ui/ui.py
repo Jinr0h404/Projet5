@@ -7,6 +7,7 @@ user interface"""
 
 
 from database import database
+from database import model
 
 class Menu:
     """the menu class contains the methods allowing display and interaction
@@ -16,6 +17,7 @@ class Menu:
         self.category = 0
         self.product = 0
         self.favorites = 0
+        self.start = 0
 
     def home_display(self):
         """the home_display method offers the user to find a substitute for a
@@ -57,13 +59,13 @@ class Menu:
 #        return(self.product)
 
     def substitute_record(self):
-        choice = "0"
-        choice_input = 0
-        while not(choice_input == 1 or choice_input == 2):
+        choice = "2"
+        choice_input = 2
+        while not(choice_input == 0 or choice_input == 1):
             choice = input(
                 "souhaitez-vous enregistrer ce substitut dans vos favoris?\n"
-                "1 - OUI\n"
-                "2 - NON\n")
+                "0 - NON\n"
+                "1 - OUI\n")
             if choice.isdigit() is True:
                 choice_input = int(choice)
             else:
@@ -78,6 +80,19 @@ class Menu:
 
     def substitute_display(self):
         print("voici la liste de vos favoris")
+
+    def start_display(self, db):
+        if db.exist_bdd:
+            print('vous re-voilà, voulez vous')
+            choice = ""
+            while not(choice == "0" or choice == "1"):
+                choice = input("0 - Créer une nouvelle base ?\n"
+                "1 - retourner à votre base ?\n")
+                if not choice.isdigit():
+                    print("il faut entrer un chiffre de la liste")
+            self.start = int(choice)
+        else:
+            print('Patientez pendant la création de votre base de données')
 
     def run(self, menu, data_manage):
         quit = 0

@@ -11,20 +11,26 @@ import ui.ui
 
 
 def main():
-    # generate an instance of Database object contain a list of product from the api open food fact
-    data = api.downloader.Database()
-    data.list_database()
-    get_list = data.product_list
-    data.cleaner_list(get_list)
-    # create database in mysql
-    db = database.model.Database_creation()
-    db.my_db_create()
-    db.my_db_setter(data.clean_list)
-    #generate instance of Data_manager
-    data_manage = database.database.Data_manager()
     # generate an instance of Menu object from the UI
     menu = ui.ui.Menu()
-    menu.run(menu, data_manage)
+    # create database in mysql
+    db = database.model.Database_creation()
+    #generate instance of Data_manager
+    data_manage = database.database.Data_manager()
+    db.my_db_check()
+    #print('dbexist =', db.exist_bdd)
+    menu.start_display(db)
+    if not menu.start:
+        # generate an instance of Database object contain a list of product from the api open food fact
+        data = api.downloader.Database()
+        data.list_database()
+        get_list = data.product_list
+        data.cleaner_list(get_list)
+        db.my_db_create()
+        db.my_db_setter(data.clean_list)
+        menu.run(menu, data_manage)
+    else:
+        menu.run(menu, data_manage)
 
 
 

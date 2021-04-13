@@ -81,8 +81,18 @@ class Database_creation:
     mysql.connector library and the tables with peewee orm."""
     def __init__(self):
         self.db_connexion = mysql.connector.connect(
-            user="root", password="12345678", host="localhost"
+            user="root", password="12345678", host="localhost",
+            buffered=True
             )
+        self.exist_bdd = 0
+
+    def my_db_check(self):
+        """ this method check if there is already tables in bdd and return an empty row if not."""
+        cursor = self.db_connexion.cursor()
+        cursor.execute("""SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'api_open_food';""")
+        bdd_check = cursor.fetchone()
+        if bdd_check:
+            self.exist_bdd = 1
 
     def my_db_create(self):
         """ this method uses mysql.connector to create the database and a non-root
