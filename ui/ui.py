@@ -33,6 +33,8 @@ class Menu:
 #        return(self.home)
 
     def choice_display(self, list_cat_id):
+        """the choice_display method offers the user to choose a category
+        whose products he wants to display."""
         choice = "0"
         choice_input = 0
         while not(choice_input in list_cat_id):
@@ -46,6 +48,8 @@ class Menu:
         return(self.category)
 
     def product_display(self, list_prod_id):
+        """the product_display method offers the user to choose a product
+        for wich he wants to display a substitute."""
         print("Pour quel produit souhaitez vous un substitut?")
         choice = "0"
         choice_input = 0
@@ -56,9 +60,10 @@ class Menu:
             else:
                 print("il faut entrer un nombre")
         self.product = choice_input
-#        return(self.product)
 
     def substitute_record(self):
+        """the product_display method offers the user to choose or not he 
+        wants to save the product in the favorites"""
         choice = "2"
         choice_input = 2
         while not(choice_input == 0 or choice_input == 1):
@@ -95,6 +100,9 @@ class Menu:
             print('Patientez pendant la création de votre base de données')
 
     def run(self, menu, data_manage):
+        """the run method executes the different methods of the menu class
+        while calling the methods of the database with the user's responses
+        as parameter."""
         quit = 0
         while not quit:
             choice_result = menu.home_display()

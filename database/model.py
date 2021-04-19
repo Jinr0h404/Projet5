@@ -8,12 +8,11 @@ import peewee
 import mysql.connector
 from tqdm import tqdm
 
-# peewee
 
+""" use peewee, define which database and user is used"""
 mysql_db = peewee.MySQLDatabase(
     "api_open_food", user="food", password="1234", host="localhost"
 )
-
 
 
 class BaseModel(peewee.Model):
@@ -21,7 +20,6 @@ class BaseModel(peewee.Model):
     (the engine of the table and the encoding) to the other classes"""
     class Meta:
         database = mysql_db
-        # maybe parentheses instead of brackets in the pewwe doc
         table_settings = ["ENGINE=InnoDB", "DEFAULT CHARSET=utf8"]
 
 
@@ -95,11 +93,11 @@ class Database_creation:
             self.exist_bdd = 1
 
     def my_db_create(self):
-        """ this method uses mysql.connector to create the database and a non-root
-        user to manage this database.""" 
-        # creating database_cursor to perform SQL operation
+        """ this method uses mysql.connector to create the database and a
+        non-root user to manage this database.""" 
+        """ creating database_cursor to perform SQL operation """
         cursor = self.db_connexion.cursor()
-        # executing cursor with execute method and pass SQL query
+        """executing cursor with execute method and pass SQL query"""
         cursor.execute("DROP DATABASE IF EXISTS api_open_food;")
         cursor.execute("CREATE DATABASE IF NOT EXISTS api_open_food")
         cursor.execute("CREATE USER IF NOT EXISTS 'food'@'localhost' IDENTIFIED BY '1234'")
@@ -115,7 +113,7 @@ class Database_creation:
         )
 
         for i in tqdm(list_dict):
-            #tqdm add loading tool progression
+            """tqdm add loading tool progression"""
             new_product = Produit.create(
                 nom_produit=i["name"],
                 marque=i["brand"],
@@ -129,7 +127,7 @@ class Database_creation:
                 table with get_or_create function of peewee to haven't a
                 duplicate"""
                 category = category.strip()
-                # strip() remove spaces before and after item
+                """ strip() remove spaces before and after item"""
                 new_category, created = Categorie.get_or_create(
                     nom_categorie=category)
                 id_product = Produit.select(Produit.unique_id).where(
@@ -141,7 +139,7 @@ class Database_creation:
                 res = Produit_categorie.insert(
                     produit_unique_id=id_product, categorie_unique_id=id_category
                 ).execute()
-            # make a loop for each store
+            """ make a loop for each store"""
             for store in i["store"]:
                 """like category, the value of the store key in the dictionary
                 can contain several elements. loop to fill my table with the

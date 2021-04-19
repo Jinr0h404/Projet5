@@ -10,6 +10,7 @@ import database.model
 from tqdm import tqdm
 
 
+""" use peewee, define which database and user is used"""
 mysql_db = peewee.MySQLDatabase(
     "api_open_test", user="food", password="1234", host="localhost"
 )

@@ -11,17 +11,17 @@ import ui.ui
 
 
 def main():
-    # generate an instance of Menu object from the UI
+    """ generate an instance of Menu object from the UI """
     menu = ui.ui.Menu()
-    # create database in mysql
+    """ create database in mysql """
     db = database.model.Database_creation()
-    #generate instance of Data_manager
+    """ generate instance of Data_manager """
     data_manage = database.database.Data_manager()
     db.my_db_check()
     #print('dbexist =', db.exist_bdd)
     menu.start_display(db)
     if not menu.start:
-        # generate an instance of Database object contain a list of product from the api open food fact
+        """ generate an instance of Database object contain a list of product from the api open food fact """
         data = api.downloader.Database()
         data.list_database()
         get_list = data.product_list

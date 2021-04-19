@@ -26,7 +26,8 @@ class Database:
         API. The loop goes through each element of the number of pages given,
         checks if the main categories are correctly entered for the product
         and creates a dictionary list."""
-        for i in tqdm(range(1, self.pages)):# tqdm add progress bar
+        for i in tqdm(range(1, self.pages)):
+            """ tqdm add progress bar """
             params = {
                 "action": "process",
                 "page_size": self.page_size,
