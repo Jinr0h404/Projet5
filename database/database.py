@@ -34,13 +34,15 @@ class Data_manager:
         """method which executes a query returning a random list of 15
         categories (the list contains the id of the categories) taken from
         the database"""
-        query = database.model.Categorie.select().order_by(peewee.fn.Rand()).limit(15)
+        query = database.model.Categorie.select().order_by(
+            peewee.fn.Rand()).limit(15)
         list_id_cat = []
         for cat in query:
             number_product = (
                 database.model.Produit.select()
                 .join(database.model.Produit_categorie)
-                .where(database.model.Produit_categorie.categorie_unique_id == cat.unique_id)
+                .where(database.model.Produit_categorie.categorie_unique_id ==
+                    cat.unique_id)
             )
             print(
                 "l'id de catégorie n°:",
@@ -61,7 +63,8 @@ class Data_manager:
         query = (
             database.model.Produit.select()
             .join(database.model.Produit_categorie)
-            .where(database.model.Produit_categorie.categorie_unique_id == id_choice)
+            .where(database.model.Produit_categorie.categorie_unique_id ==
+                id_choice)
         )
         list_id_prod = []
         for product in query:
@@ -80,7 +83,8 @@ class Data_manager:
     def my_db_product_name_getter(self, id_prod):
         """method which executes a query returning the name of products
         whose id is given as a parameter."""
-        query = database.model.Produit.select().where(database.model.Produit.unique_id == id_prod)
+        query = database.model.Produit.select().where(
+            database.model.Produit.unique_id == id_prod)
         product_name = []
         for product in query:
             product_name.append(product.nom_produit)
@@ -96,14 +100,16 @@ class Data_manager:
         query_cat = (
             database.model.Categorie.select()
             .join(database.model.Produit_categorie)
-            .where(database.model.Produit_categorie.produit_unique_id == id_choice)
+            .where(database.model.Produit_categorie.produit_unique_id ==
+                id_choice)
         )
         for category in query_cat:
             query_substitute = (
                 database.model.Produit.select()
                 .join(database.model.Produit_categorie)
                 .where(
-                    database.model.Produit_categorie.categorie_unique_id == category.unique_id)
+                    database.model.Produit_categorie.categorie_unique_id ==
+                    category.unique_id)
             )
             for product in query_substitute:
                 if product.unique_id in list_substitute.keys():
@@ -113,7 +119,8 @@ class Data_manager:
         sorted_dict = sorted(list_substitute.items(
             ), key=lambda t: t[1], reverse=True)
         i = 1
-        query = database.model.Produit.select().where(database.model.Produit.unique_id == id_choice)
+        query = database.model.Produit.select().where(
+            database.model.Produit.unique_id == id_choice)
         query_nutriscore = ""
         query_best_id = 0
         query_same_id = 0
@@ -154,7 +161,8 @@ class Data_manager:
         query_store = (
             database.model.Magasin.select()
             .join(database.model.Produit_magasin)
-            .where(database.model.Produit_magasin.produit_unique_id == query_best_id)
+            .where(database.model.Produit_magasin.produit_unique_id ==
+                query_best_id)
         )
         list_store = []
         for store in query_store:
@@ -199,11 +207,13 @@ class Data_manager:
     def my_db_favorites(self):
         """method that executes a query to display the list of products in
         the favorites table."""
-        query_favorite = database.model.Favoris.select().join(database.model.Produit)
+        query_favorite = database.model.Favoris.select().join(
+            database.model.Produit)
         print("voici vos favoris: ")
 
         for id_prod in query_favorite:
-            query_product = database.model.Produit.select().join(database.model.Favoris).where(
+            query_product = database.model.Produit.select().join(
+                database.model.Favoris).where(
             database.model.Produit.unique_id == id_prod.fk_unique_id_produit)
             for product in query_product:
                 print(

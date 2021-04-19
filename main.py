@@ -21,7 +21,8 @@ def main():
     #print('dbexist =', db.exist_bdd)
     menu.start_display(db)
     if not menu.start:
-        """ generate an instance of Database object contain a list of product from the api open food fact """
+        """ generate an instance of Database object contain a list of product
+        from the api open food fact """
         data = api.downloader.Database()
         data.list_database()
         get_list = data.product_list

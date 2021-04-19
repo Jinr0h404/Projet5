@@ -39,7 +39,7 @@ class Menu:
         choice_input = 0
         while not(choice_input in list_cat_id):
             choice = input(
-                "Choisissez la catégorie dont vous vouler afficher les produits\n")
+                "Choisissez la catégorie dont vous voulez afficher les produits\n")
             if choice.isdigit() is True:
                 choice_input = int(choice)
             else:

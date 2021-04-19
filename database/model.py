@@ -48,7 +48,8 @@ class Produit_categorie(BaseModel):
     categorie_unique_id = peewee.ForeignKeyField(Categorie)
 
     class Meta:
-        primary_key = peewee.CompositeKey("produit_unique_id", "categorie_unique_id")
+        primary_key = peewee.CompositeKey("produit_unique_id",
+            "categorie_unique_id")
 
 
 class Magasin(BaseModel):
@@ -65,7 +66,8 @@ class Produit_magasin(BaseModel):
     magasin_unique_id = peewee.ForeignKeyField(Magasin)
 
     class Meta:
-        primary_key = peewee.CompositeKey("produit_unique_id", "magasin_unique_id")
+        primary_key = peewee.CompositeKey("produit_unique_id",
+            "magasin_unique_id")
 
 
 class Favoris(BaseModel):
@@ -85,9 +87,12 @@ class Database_creation:
         self.exist_bdd = 0
 
     def my_db_check(self):
-        """ this method check if there is already tables in bdd and return an empty row if not."""
+        """ this method check if there is already tables in bdd and return an
+        empty row if not."""
         cursor = self.db_connexion.cursor()
-        cursor.execute("""SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = 'api_open_food';""")
+        cursor.execute("""SELECT TABLE_NAME FROM
+            information_schema.tables WHERE
+            table_schema = 'api_open_food';""")
         bdd_check = cursor.fetchone()
         if bdd_check:
             self.exist_bdd = 1
@@ -100,7 +105,8 @@ class Database_creation:
         """executing cursor with execute method and pass SQL query"""
         cursor.execute("DROP DATABASE IF EXISTS api_open_food;")
         cursor.execute("CREATE DATABASE IF NOT EXISTS api_open_food")
-        cursor.execute("CREATE USER IF NOT EXISTS 'food'@'localhost' IDENTIFIED BY '1234'")
+        cursor.execute("""CREATE USER IF NOT EXISTS 'food'@'localhost'
+            IDENTIFIED BY '1234'""")
         cursor.execute("""GRANT ALL PRIVILEGES ON api_open_food.* TO 
             'food'@'localhost'""")
 
@@ -137,8 +143,8 @@ class Database_creation:
                     Categorie.nom_categorie == category
                 )
                 res = Produit_categorie.insert(
-                    produit_unique_id=id_product, categorie_unique_id=id_category
-                ).execute()
+                    produit_unique_id=id_product,
+                    categorie_unique_id=id_category).execute()
             """ make a loop for each store"""
             for store in i["store"]:
                 """like category, the value of the store key in the dictionary
