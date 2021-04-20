@@ -23,57 +23,57 @@ class BaseModel(peewee.Model):
         table_settings = ["ENGINE=InnoDB", "DEFAULT CHARSET=utf8"]
 
 
-class Produit(BaseModel):
+class Product(BaseModel):
     """this class is for the peewee orm, it gives the parameters for the
     creation of the table of the same name in the database."""
     unique_id = peewee.AutoField()
-    nom_produit = peewee.CharField(200)
-    marque = peewee.TextField(null=True)
+    product_name = peewee.CharField(200)
+    brand = peewee.TextField(null=True)
     description = peewee.TextField(null=True)
     nutriscore = peewee.CharField(1)
     url = peewee.TextField(null=True)
 
 
-class Categorie(BaseModel):
+class Category(BaseModel):
     """this class is for the peewee orm, it gives the parameters for the
     creation of the table of the same name in the database."""
     unique_id = peewee.AutoField()
-    nom_categorie = peewee.CharField(200)
+    category_name = peewee.CharField(200)
 
 
-class Produit_categorie(BaseModel):
+class Product_category(BaseModel):
     """this class is for the peewee orm, it gives the parameters for the
     creation of the table of the same name in the database."""
-    produit_unique_id = peewee.ForeignKeyField(Produit)
-    categorie_unique_id = peewee.ForeignKeyField(Categorie)
+    product_unique_id = peewee.ForeignKeyField(Product)
+    category_unique_id = peewee.ForeignKeyField(Category)
 
     class Meta:
-        primary_key = peewee.CompositeKey("produit_unique_id",
-            "categorie_unique_id")
+        primary_key = peewee.CompositeKey("product_unique_id",
+            "category_unique_id")
 
 
-class Magasin(BaseModel):
+class Store(BaseModel):
     """this class is for the peewee orm, it gives the parameters for the
     creation of the table of the same name in the database."""
     unique_id = peewee.AutoField()
-    nom_magasin = peewee.CharField(100)
+    store_name = peewee.CharField(100)
 
 
-class Produit_magasin(BaseModel):
+class Product_store(BaseModel):
     """this class is for the peewee orm, it gives the parameters for the
     creation of the table of the same name in the database."""
-    produit_unique_id = peewee.ForeignKeyField(Produit)
-    magasin_unique_id = peewee.ForeignKeyField(Magasin)
+    product_unique_id = peewee.ForeignKeyField(Product)
+    store_unique_id = peewee.ForeignKeyField(Store)
 
     class Meta:
-        primary_key = peewee.CompositeKey("produit_unique_id",
-            "magasin_unique_id")
+        primary_key = peewee.CompositeKey("product_unique_id",
+            "store_unique_id")
 
 
-class Favoris(BaseModel):
+class Favorites(BaseModel):
     """this class is for the peewee orm, it gives the parameters for the
     creation of the table of the same name in the database."""
-    fk_unique_id_produit = peewee.ForeignKeyField(Produit)
+    fk_unique_id_product = peewee.ForeignKeyField(Product)
 
 
 class Database_creation:
@@ -114,15 +114,15 @@ class Database_creation:
         """ this method uses peewee to create the database tables and their
         columns""" 
         mysql_db.create_tables(
-            [Produit, Categorie, Produit_categorie, Magasin, Produit_magasin,
-                Favoris]
+            [Product, Category, Product_category, Store, Product_store,
+                Favorites]
         )
 
         for i in tqdm(list_dict):
             """tqdm add loading tool progression"""
-            new_product = Produit.create(
-                nom_produit=i["name"],
-                marque=i["brand"],
+            new_product = Product.create(
+                product_name=i["name"],
+                brand=i["brand"],
                 description=i["description"],
                 nutriscore=i["nutriscore"],
                 url=i["url"],
@@ -134,32 +134,32 @@ class Database_creation:
                 duplicate"""
                 category = category.strip()
                 """ strip() remove spaces before and after item"""
-                new_category, created = Categorie.get_or_create(
-                    nom_categorie=category)
-                id_product = Produit.select(Produit.unique_id).where(
-                    Produit.nom_produit == i["name"]
+                new_category, created = Category.get_or_create(
+                    category_name=category)
+                id_product = Product.select(Product.unique_id).where(
+                    Product.product_name == i["name"]
                 )
-                id_category = Categorie.select(Categorie.unique_id).where(
-                    Categorie.nom_categorie == category
+                id_category = Category.select(Category.unique_id).where(
+                    Category.category_name == category
                 )
-                res = Produit_categorie.insert(
-                    produit_unique_id=id_product,
-                    categorie_unique_id=id_category).execute()
+                res = Product_category.insert(
+                    product_unique_id=id_product,
+                    category_unique_id=id_category).execute()
             """ make a loop for each store"""
             for store in i["store"]:
                 """like category, the value of the store key in the dictionary
                 can contain several elements. loop to fill my table with the
                 get_or_create function"""
                 store = store.strip()
-                new_store, created = Magasin.get_or_create(nom_magasin=store)
-                id_product = Produit.select(Produit.unique_id).where(
-                    Produit.nom_produit == i["name"]
+                new_store, created = Store.get_or_create(store_name=store)
+                id_product = Product.select(Product.unique_id).where(
+                    Product.product_name == i["name"]
                 )
-                id_magasin = Magasin.select(Magasin.unique_id).where(
-                    Magasin.nom_magasin == store
+                id_magasin = Store.select(Store.unique_id).where(
+                    Store.store_name == store
                 )
-                res = Produit_magasin.insert(
-                    produit_unique_id=id_product, magasin_unique_id=id_magasin
+                res = Product_store.insert(
+                    product_unique_id=id_product, store_unique_id=id_magasin
                 ).execute()
 
 
