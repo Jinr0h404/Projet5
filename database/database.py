@@ -111,11 +111,14 @@ class Data_manager:
                     database.model.Product_category.category_unique_id ==
                     category.unique_id)
             )
+            """loop to give +1 each time a product has a same category of
+            the choose product"""
             for product in query_substitute:
                 if product.unique_id in list_substitute.keys():
                     list_substitute[product.unique_id] += 1
                 else:
                     list_substitute[product.unique_id] = 1
+        """function for sorted list by value (unique id of item)"""
         sorted_dict = sorted(list_substitute.items(
             ), key=lambda t: t[1], reverse=True)
         i = 1
