@@ -25,7 +25,7 @@ You can dowload zip file or dowload with the url and Git:
 - create new folder for Project, with Git in root of the folder
 - Make git clone https://github.com/Jinr0h404/Projet5.git
 
-1. If you don't have it: Install Python 3.9 and Pygame version in requirement file.
+1. If you don't have it: Install Python 3.9 and requirements file.
 You will find the sources for Python here:
 [link to sources](https://www.python.org/downloads/)
 
